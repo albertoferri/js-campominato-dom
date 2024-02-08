@@ -30,6 +30,10 @@ body{
     height: 100px; 
     border: 1px solid black; 
     cursor: pointer;
+    background-color: transparent;
+    border-radius: 5px;
+
+    font-weight: bold;
 }
 
 #grid.medium{
@@ -50,7 +54,12 @@ body{
     height: 70px; 
 }
 
-.square.active{
-    background: linear-gradient(to bottom, #4d8bea, #f04141);
+.square.revealed{
+    background-color: cornflowerblue;
     color: white;
+}
+
+.square.bomb{
+    background-color: red;
+    color: black;
 }
