@@ -11,50 +11,20 @@
 // Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha cliccato su una cella che non era una bomba.
 
 // Il computer deve generare 16 numeri casuali e inserirli in un array
-function randomNumber100() {
+const numeriCasuali = [];
+function randomNumber(max) {
     // creo array vuoto
-    const numeriCasuali100 = [];
-    while (numeriCasuali100.length < 16) {
-        const numeroCasuale100 = Math.floor(Math.random() * 100) + 1;
+   
+    while (numeriCasuali.length < 16) {
+        const numeroCasuale = Math.floor(Math.random() * max) + 1;
         // controllo se il numero generato è già presente nell'array, se non lo è, lo pusho
-        if (!numeriCasuali100.includes(numeroCasuale100)) {
-            numeriCasuali100.push(numeroCasuale100);
+        if (!numeriCasuali.includes(numeroCasuale)) {
+            numeriCasuali.push(numeroCasuale);
         }
     }
-    return numeriCasuali100;
-}
-function randomNumber81() {
-    // creo array vuoto
-    const numeriCasuali81 = [];
-    while (numeriCasuali81.length < 16) {
-        const numeroCasuale81 = Math.floor(Math.random() * 81) + 1;
-        // controllo se il numero generato è già presente nell'array, se non lo è, lo pusho
-        if (!numeriCasuali81.includes(numeroCasuale81)) {
-            numeriCasuali81.push(numeroCasuale81);
-        }
-    }
-    return numeriCasuali81;
-}
-function randomNumber49() {
-    // creo array vuoto
-    const numeriCasuali49 = [];
-    while (numeriCasuali49.length < 16) {
-        const numeroCasuale49 = Math.floor(Math.random() * 49) + 1;
-        // controllo se il numero generato è già presente nell'array, se non lo è, lo pusho
-        if (!numeriCasuali49.includes(numeroCasuale49)) {
-            numeriCasuali49.push(numeroCasuale49);
-        }
-    }
-    return numeriCasuali49;
+    return numeriCasuali;
 }
 
-// Esempio di utilizzo della funzione
-const randomElement = randomNumber100();
-console.log("BOMBE NELLA MODALITA' FACILE", randomNumber100());
-const randomElement81 = randomNumber81();
-console.log("BOMBE NELLA MODALITA' MEDIA", randomNumber81());
-const randomElement49 = randomNumber49();
-console.log("BOMBE NELLA MODALITA' DIFFICILE", randomNumber49());
 
 // assegno variabile al bottone
 const createGridElement = document.getElementById("createGrid-Btn");
@@ -76,10 +46,13 @@ function createGrid() {
     
     if (selectElement.value == "easy"){
         cellNumber = 100;
+        randomNumber(cellNumber);
     } else if (selectElement.value == "medium"){
         cellNumber = 81;
+        randomNumber(cellNumber);
     } else {
         cellNumber = 49;
+        randomNumber(cellNumber);
     }
     gridElement.className = selectElement.value;
     
@@ -90,43 +63,26 @@ function createGrid() {
         gridElement.append(squareElement);
         
         // cambio colore al click
-        squareElement.addEventListener("click", function(){
+        squareElement.addEventListener("click", function(clicca){
 
             let pressed = Number(this.innerText)
+
             // funzione per capire se l'elemento è contenuto nell'array
-            // 10x10
-            if (randomElement.includes(pressed)){
+            if (numeriCasuali.includes(pressed)){
                 this.classList.add("bomb");
-
                 finePartita();
+                // const quadrato = document.querySelectorAll(".square");
+                // quadrato.forEach(function(quadrato) {
+                //     quadrato.removeEventListener("click", clicca);
+                //     });
             } else {
                 this.classList.add("revealed");
                 verificaFinePartita();
             }
-            // 9x9
-            if (randomElement81.includes(pressed)){
-                this.classList.add("bomb");
-
-                finePartita();
-            } else {
-                this.classList.add("revealed");
-                verificaFinePartita();
-            }
-            // 7x7
-            if (randomElement49.includes(pressed)){
-                this.classList.add("bomb");
-
-                finePartita();
-            } else {
-                this.classList.add("revealed");
-                verificaFinePartita();
-            }
-            // console.log("HAI SELEZIONATO LA CELLA: " + this.innerText);
 
             
             // inpedisco di cliccare due volte sullo stesso pulsante
             squareElement.setAttribute('disabled', 'true');
-            // console.log('cell disabled');
         });
     }
 }
@@ -135,8 +91,9 @@ let numeriScoperti = 0;
 // Funzione per verificare la fine della partita
 function verificaFinePartita() {
     numeriScoperti++;
-    if (numeriScoperti === 100 - randomElement.length) {
+    if (numeriScoperti === cellNumber - numeriCasuali.length) {
         finePartita();
+        console.log("hai vinto")
     }
     console.log("PUNTEGGIO:  " + numeriScoperti);
 }
