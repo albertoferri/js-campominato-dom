@@ -24,6 +24,7 @@ function randomNumber(max) {
     }
     return numeriCasuali;
 }
+console.log(randomNumber(100))
 
 
 // assegno variabile al bottone
@@ -63,7 +64,7 @@ function createGrid() {
         gridElement.append(squareElement);
         
         // cambio colore al click
-        squareElement.addEventListener("click", function(clicca){
+        squareElement.addEventListener("click", function(){
 
             let pressed = Number(this.innerText)
 
@@ -71,18 +72,16 @@ function createGrid() {
             if (numeriCasuali.includes(pressed)){
                 this.classList.add("bomb");
                 finePartita();
-                // const quadrato = document.querySelectorAll(".square");
-                // quadrato.forEach(function(quadrato) {
-                //     quadrato.removeEventListener("click", clicca);
-                //     });
             } else {
                 this.classList.add("revealed");
                 verificaFinePartita();
             }
-
             
-            // inpedisco di cliccare due volte sullo stesso pulsante
+            // impedisco di cliccare due volte sullo stesso pulsante
             squareElement.setAttribute('disabled', 'true');
+            
+            const scoreElement = document.querySelector("#user-result");
+            scoreElement.style.display = "block";
         });
     }
 }
@@ -100,5 +99,6 @@ function verificaFinePartita() {
 
 function finePartita() {
     const punteggio = numeriScoperti;
-    alert("Game Over! Il tuo punteggio è: " + punteggio);
+    document.getElementById("punteggio").innerHTML = "Game Over! Il tuo punteggio è: " + punteggio;
 }
+
